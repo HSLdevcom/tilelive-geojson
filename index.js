@@ -12,7 +12,7 @@ class GeoJSONSource {
     configuration.sources.forEach(source => {
       const geojsonFile = fs.readFileSync(source.file);
       const sourceOptions = {
-        maxZoom: source.maxzoom,
+        maxZoom: configuration.maxzoom,
         buffer: 64
       }
       this.data[source.id] = geojsonVt(JSON.parse(geojsonFile), sourceOptions);
@@ -29,7 +29,7 @@ class GeoJSONSource {
       }
 
       return {...acc, [source.id]: tile }
-    })
+    }, {})
 
     const data = Buffer.from(vtPbf.fromGeojsonVt(jsonTile));
 
