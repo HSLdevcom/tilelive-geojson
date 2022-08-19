@@ -6,13 +6,14 @@ Give the following configuration for the layer:
 
 ```jsonc
 {
-  "protocol": "geojson:",
+  "protocol": "geojson:", // Defines layer to use this module
+  "query": {}, // required for tilelive
   "name": "Ticket sales", // Friendly name of the layer
   "maxzoom": 20, // Max zoom level (optional, default 14)
-  "sources": {[ // Can be multiple layers / sources
+  "sources": [{ // Can be multiple layers / sources
     "id": "ticket-sales", // Layer id to be used in vector tile
     "description": "", // Optional description
     "file": "ticket-sales.geojson" // Data file to be served as a vector tile layer
-  ]}
+  }]
 }
 ```

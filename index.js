@@ -10,13 +10,14 @@ class GeoJSONSource {
     this.data = {}
 
     configuration.sources.forEach(source => {
-      const geojsonFile = fs.readFileSync(file);
-      sourceOptions = {
+      const geojsonFile = fs.readFileSync(source.file);
+      const sourceOptions = {
         maxZoom: source.maxzoom,
         buffer: 64
       }
       this.data[source.id] = geojsonVt(JSON.parse(geojsonFile), sourceOptions);
     });
+    callback(null, this);
   }
 
   getTile(z, x, y, callback) {
@@ -43,10 +44,12 @@ class GeoJSONSource {
   }
 
   getInfo(callback) {
+    const { name, maxzoom, sources } = this.configuration;
     callback(null, {
+      name,
       format: "pbf",
-      maxzoom: this.configuration.maxzoom,
-      vector_layers: this.configuration.sources.map(source => ({
+      maxzoom,
+      vector_layers: sources.map(source => ({
         id: source.id,
         desciption: source.description
       }))
