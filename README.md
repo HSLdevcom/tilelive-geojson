@@ -4,15 +4,15 @@ A [tilelive](https://github.com/mapbox/tilelive) vector tile source for [hsl-map
 ## Usage
 Give the following configuration for the layer:
 
-```json
+```jsonc
 {
   "protocol": "geojson:",
   "name": "Ticket sales", // Friendly name of the layer
   "maxzoom": 20, // Max zoom level (optional, default 14)
-  "vector_layers": {[ // Can be multiple layers / sources
+  "sources": {[ // Can be multiple layers / sources
     "id": "ticket-sales", // Layer id to be used in vector tile
     "description": "", // Optional description
     "file": "ticket-sales.geojson" // Data file to be served as a vector tile layer
-  }]
+  ]}
 }
 ```
