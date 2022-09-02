@@ -10,6 +10,8 @@ Give the following configuration for the layer:
   "query": {}, // required for tilelive
   "name": "Ticket sales", // Friendly name of the layer
   "maxzoom": 20, // Max zoom level (optional, default 14)
+  "bounds": [18, 58, 32, 71], // Extent of data coordinates, (optional, defaults to entire world)
+  "center": [24.9, 60.1, 14], // Default location for client. The last value is zoom level. (Optional, defaults to [-122.444, 37.7908, 12])
   "sources": [{ // Can be multiple layers / sources
     "id": "ticket-sales", // Layer id to be used in vector tile
     "description": "", // Optional description

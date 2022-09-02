@@ -44,11 +44,13 @@ class GeoJSONSource {
   }
 
   getInfo(callback) {
-    const { name, maxzoom, sources } = this.configuration;
+    const { name, maxzoom, bounds, center, sources } = this.configuration;
     callback(null, {
       name,
       format: "pbf",
       maxzoom,
+      bounds,
+      center,
       vector_layers: sources.map(source => ({
         id: source.id,
         desciption: source.description
