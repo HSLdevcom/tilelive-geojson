@@ -13,6 +13,7 @@ class GeoJSONSource {
       const geojsonFile = fs.readFileSync(source.file);
       const sourceOptions = {
         maxZoom: configuration.maxzoom,
+        indexMaxZoom: configuration.indexMaxZoom,
         buffer: 64
       }
       this.data[source.id] = geojsonVt(JSON.parse(geojsonFile), sourceOptions);
