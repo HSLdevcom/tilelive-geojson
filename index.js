@@ -27,7 +27,7 @@ class GeoJSONSource {
     const key = `${z}/${x}/${y}`;
     let data;
 
-    if (this.cache.has(key)) {
+    if (!this.cache.has(key)) {
       const jsonTile = this.configuration.sources.reduce((acc, source) => {
         let tile = this.data[source.id].getTile(z, x, y);
 
