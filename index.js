@@ -2,12 +2,14 @@
 const geojsonVt = require('geojson-vt');
 const vtPbf = require('vt-pbf');
 const zlib = require('zlib');
-const fs = require('fs')
+const fs = require('fs');
+const NodeCache = require('node-cache');
 
 class GeoJSONSource {
   constructor(configuration, callback) {
-    this.configuration = configuration
-    this.data = {}
+    this.configuration = configuration;
+    this.data = {};
+    this.cache = new NodeCache({ stdTTL: 3600 });
 
     configuration.sources.forEach(source => {
       const geojsonFile = fs.readFileSync(source.file);
@@ -22,17 +24,25 @@ class GeoJSONSource {
   }
 
   getTile(z, x, y, callback) {
-    const jsonTile = this.configuration.sources.reduce((acc, source) => {
-      let tile = this.data[source.id].getTile(z, x, y);
+    const key = `${z}/${x}/${y}`;
+    let data;
 
-      if (tile === null) {
-        tile = { features: [] }
-      }
+    if (this.cache.has(key)) {
+      const jsonTile = this.configuration.sources.reduce((acc, source) => {
+        let tile = this.data[source.id].getTile(z, x, y);
 
-      return {...acc, [source.id]: tile }
-    }, {})
+        if (tile === null) {
+          tile = { features: [] }
+        }
 
-    const data = Buffer.from(vtPbf.fromGeojsonVt(jsonTile));
+        return {...acc, [source.id]: tile }
+      }, {})
+
+      data = Buffer.from(vtPbf.fromGeojsonVt(jsonTile));
+      this.cache.set(key, data);
+    } else {
+      data = this.cache.get(key);
+    }
 
     zlib.gzip(data, function (err, buffer) {
       if (err) {
